@@ -1,0 +1,18 @@
+
+.buttons{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1 1 0;
+}
+
+body{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.spacing{
+    flex: 10 1 100px;
+}
+

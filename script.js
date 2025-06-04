@@ -14,25 +14,7 @@ function getPlayerChoice() {
     return prompt("Please enter your choice (rock, paper, or scissors): ");
 }
 
-function inputToNum(user) {
-    user.toLowerCase();
-    if (user == "rock") {
-        return 0;
-    }
-    else if (user == "paper") {
-        return 1;
-    }
-    else if (user == "scissors") {
-        return 2;
-    }
-    else {
-        alert("user input error");
-        return;
-    }
-}
 function isUserWin(user, computer) {
-
-    user = inputToNum(user);
 
     if (user == computer) {
         return 0;
@@ -50,52 +32,62 @@ function isUserWin(user, computer) {
     return 1;
 }
 
-
-
-function playGame() {
-    let humanScore = 0;
-    let computerScore = 0;
-
-    function playRound() {
-
-        let userInput = getPlayerChoice();
-        let computerChoice = getComputerChoice();
-        let isWin = isUserWin(userInput, computerChoice);
-
-        console.log("isWin: " + isWin);
-        console.log("computer choice: " + computerChoice);
-
-        if (computerChoice == 0) {
-            computerChoice = "rock";
-        }
-        else if (computerChoice == 1) {
-            computerChoice = "paper";
-        }
-        else {
-            computerChoice = "scissors";
-        }
-
-        if (isWin == 1) {
-            console.log(`You win! ${userInput} beats ${computerChoice}`);
-            humanScore++;
-        }
-        else if (isWin == 0) {
-            console.log(`It's a tie! Both players chose ${userInput}`);
-        }
-
-        else {
-            console.log(`Computer Wins! ${computerChoice} beats ${userInput}`);
-            computerScore++;
-        }
-
-
+function numToChoice(num){
+    let choice = "";
+    if(num == 0){
+        choice = "rock";
     }
-
-    for(let i = 0; i < 5; i++){
-        playRound();
-        console.log(`Current score: User - ${humanScore} Computer - ${computerScore}`)
+    else if(num == 1){
+        choice = "paper";
     }
+    else if (num == 2){
+        choice = "scissors";
+    }
+    else{
+        choice = "error";
+    }
+    return choice;
 }
 
 
+    let humanScore = 0;
+    let computerScore = 0;
 
+    function playRound(userInput) {
+
+        let computerChoice = getComputerChoice();
+        let isWin = isUserWin(userInput, computerChoice);
+
+        userInput = numToChoice(userInput);
+        computerChoice = numToChoice(computerChoice);
+
+        const computerChoiceElement = document.createElement("div");
+        computerChoiceElement.textContent = `Computer chose: ${computerChoice}`;
+
+        body.appendChild(computerChoiceElement);
+
+        const winMessage = document.createElement("div");
+
+        if (isWin == 1) {
+            winMessage.textContent = `You win! ${userInput} beats ${computerChoice}`;
+            humanScore++;
+        }
+        else if (isWin == 0) {
+            winMessage.textContent = `It's a tie! Both players chose ${userInput}`;
+        }
+
+        else {
+            winMessage.textContent = `Computer Wins! ${computerChoice} beats ${userInput}`;
+            computerScore++;
+        }
+
+        body.appendChild(winMessage);
+    }
+
+buttons = Array.from(document.querySelectorAll(".buttons button"));
+
+for(let i = 0; i < buttons.length; i++){
+    buttons[i].addEventListener("click", () => playRound(i));
+}
+
+let body = document.querySelector("body");
