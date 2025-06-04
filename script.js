@@ -54,6 +54,13 @@ function numToChoice(num){
     let computerScore = 0;
 
     function playRound(userInput) {
+        while(displayMessage.firstChild){
+            displayMessage.removeChild(displayMessage.lastChild);
+        }
+        
+        const computerChoiceElement = document.createElement("div");
+        const currentScore = document.createElement("div");
+        const winMessage = document.createElement("div");
 
         let computerChoice = getComputerChoice();
         let isWin = isUserWin(userInput, computerChoice);
@@ -61,12 +68,8 @@ function numToChoice(num){
         userInput = numToChoice(userInput);
         computerChoice = numToChoice(computerChoice);
 
-        const computerChoiceElement = document.createElement("div");
+        
         computerChoiceElement.textContent = `Computer chose: ${computerChoice}`;
-
-        body.appendChild(computerChoiceElement);
-
-        const winMessage = document.createElement("div");
 
         if (isWin == 1) {
             winMessage.textContent = `You win! ${userInput} beats ${computerChoice}`;
@@ -80,14 +83,38 @@ function numToChoice(num){
             winMessage.textContent = `Computer Wins! ${computerChoice} beats ${userInput}`;
             computerScore++;
         }
+        
+        currentScore.textContent = `Player: ${humanScore} Computer: ${computerScore}`;
 
-        body.appendChild(winMessage);
+        
+
+        
+
+        if(humanScore >= 5){
+            winMessage.textContent = "Player Wins!";
+            displayMessage.appendChild(winMessage);
+        }
+        else if(computerScore >= 5){
+            winMessage.textContent = "Computer Wins!";
+            displayMessage.appendChild(winMessage);
+        }
+        else{
+            displayMessage.appendChild(winMessage);
+            displayMessage.appendChild(currentScore);
+            displayMessage.appendChild(computerChoiceElement);
+        }
+        body.appendChild(displayMessage);
     }
+
+
+const displayMessage = document.createElement("div");
 
 buttons = Array.from(document.querySelectorAll(".buttons button"));
 
 for(let i = 0; i < buttons.length; i++){
     buttons[i].addEventListener("click", () => playRound(i));
 }
+
+
 
 let body = document.querySelector("body");
